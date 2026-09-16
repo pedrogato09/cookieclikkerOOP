@@ -1,11 +1,12 @@
-let creams = 0;
+let cream = 0;
 
-const cream = document.getElementById("cream");
+const click = document.getElementById("cream");
 const count = document.getElementById("creamCount");
 
 count.innerText = 0;
+function countUpdate(){count.innerText = cream;};
 
-cream.addEventListener("click", function() {
-    creams = creams + 1;
-    count.innerText = creams;
+click.addEventListener("click", function() {
+    cream = cream + 1;
+    countUpdate()
 })
