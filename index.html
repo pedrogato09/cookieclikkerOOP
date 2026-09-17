@@ -1,17 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cream Clicker</title>
     <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
     <h1>Cream Clicker</h1>
-    <p>Cream: <span id="creamCount"></span></p>
-    <br>
-    <img src="thecream.png" width="400px" id="cream"></img>
+
+    <div class="creamscreen">
+        <p>Cream: <span id="creamCount"></span></p>
+        <br>
+        <img src="thecream.png" width="400px" id="cream"></img>
+    </div>
+
+    <div class="units">
+        <h2>Productie Eenheden</h2>
+        <p>Cursor: <span id="cursorUnits"></span></p>
+    </div>
+
+    <div class="store">
+        <h2>Winkel</h2>
+        <button id="cursorStore">Cursor</button>
+    </div>
 
     <script src="script.js"></script>
-</body> 
+</body>
+
 </html>
