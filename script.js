@@ -10,9 +10,6 @@ click.addEventListener("click", function() {
     cream = cream + 1;
     countUpdate()
 })
- cream = cream + 1;
-    cream += 1;
-    countUpdate()
 
 //units
 
