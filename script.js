@@ -16,6 +16,7 @@ click.addEventListener("click", function() {
 
 //units
 
+/*
 let cursor = 0;
 let cursorPrice = 15;
 let cursorRate = 1;
@@ -39,6 +40,20 @@ setInterval(() => {
     cream += cursor*cursorRate;
     countUpdate();
 }, 1000);
+*/
+
+class Unit {
+    constructor(name, price, rate){
+        this.name = name;
+        this.count = 0;
+        this.price = Math.round(price*1.1**this.count);
+        this.rate = rate;
+        this.units = document.getElementById(this.name + "Units");
+        this.store = document.getElementById(this.name + "Store");
+    }
+}
+
+const test = new Unit("cursor", 15, 1);
 
 let grandma = 0;
 let grandmaPrice = 100;
