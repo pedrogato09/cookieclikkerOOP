@@ -88,25 +88,37 @@ class Upgrade {
     }
 
     buy() {
-    if (cream >= this.price) {
-        cream -= this.price;
-        this.unit.rate *= this.rate;
-        this.price = Math.round(this.price * 5);
-        countUpdate();
-        this.unit.unitUpdate();
-        this.upgradeUpdate();
+        if (cream >= this.price) {
+            cream -= this.price;
+            this.unit.rate *= this.rate;
+            this.price = Math.round(this.price * 5);
+            countUpdate();
+            this.unit.unitUpdate();
+            this.upgradeUpdate();
+        }
     }
 }
+
+class CursorUpgrade extends Upgrade {
+    constructor() {
+        super("cursor", 100, cursor, 2);
+    }
 }
 
-const cursorUpgrade = new Upgrade("cursor", 100, cursor, 2);
+const cursorUpgrade = new CursorUpgrade();
 const grandmaUpgrade = new Upgrade("grandma", 500, grandma, 2);
 const mineUpgrade = new Upgrade("mine", 2000, mine, 2);
 const factoryUpgrade = new Upgrade("factory", 10000, factory, 2);
+const laboratoryUpgrade = new Upgrade("laboratory", 50000, laboratory, 2);
+const creamfallUpgrade = new Upgrade("creamfall", 250000, creamfall, 2);
+const hydroplantUpgrade = new Upgrade("hydroplant", 1000000, hydroplant, 2);
 
 setInterval(() => {
     cursorUpgrade.upgradeUpdate();
     grandmaUpgrade.upgradeUpdate();
     mineUpgrade.upgradeUpdate();
     factoryUpgrade.upgradeUpdate();
+    laboratoryUpgrade.upgradeUpdate();
+    creamfallUpgrade.upgradeUpdate();
+    hydroplantUpgrade.upgradeUpdate();
 }, 1000);
