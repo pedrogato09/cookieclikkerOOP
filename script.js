@@ -54,8 +54,12 @@ class Unit {
 
 const cursor = new Unit("cursor", 15, 1);
 const grandma = new Unit("grandma", 100, 5);
-const mine = new Unit("mine", 500, 20);
-const factory = new Unit("factory", 3000, 20);
+const farm = new Unit("farm", 800, 25);
+const mine = new Unit("mine", 6400, 120);
+const factory = new Unit("factory", 51000, 600);
+const laboratory = new Unit("laboratory", 408000, 3000);
+const creamfall = new Unit("creamfall", 3310000, 14000);
+const hydroplant = new Unit("hydroplant", 27400000, 72000);
 
 
 
