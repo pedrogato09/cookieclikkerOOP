@@ -54,12 +54,8 @@ class Unit {
 
 const cursor = new Unit("cursor", 15, 1);
 const grandma = new Unit("grandma", 100, 5);
-const farm = new Unit("farm", 800, 25);
-const mine = new Unit("mine", 6400, 120);
-const factory = new Unit("factory", 51000, 600);
-const laboratory = new Unit("laboratory", 408000, 3000);
-const creamfall = new Unit("creamfall", 3310000, 14000);
-const hydroplant = new Unit("hydroplant", 27400000, 72000);
+const mine = new Unit("mine", 500, 20);
+const factory = new Unit("factory", 3000, 20);
 
 
 
@@ -68,3 +64,47 @@ setInterval(() => {
     countUpdate();
 }, 1000);
 
+class Upgrade {
+    constructor(name, price, unit, rate){
+        this.name = name;
+        this.count = 0;
+        this.unit = unit;
+        this.price = price;
+        this.rate = rate; 
+
+        this.upgrade = document.getElementById(this.name + "Upgrade");
+        this.cost = document.getElementById(this.name + "UpgradeCost");
+
+        this.upgrade.addEventListener("click", () => {
+            this.buy();
+        });
+        this.upgradeUpdate()
+    }
+
+    upgradeUpdate(){
+        this.cost.innerText = this.price;
+    }
+
+    buy() {
+    if (cream >= this.price) {
+        cream -= this.price;
+        this.unit.rate *= this.rate;
+        this.price = Math.round(this.price * 5);
+        countUpdate();
+        this.unit.unitUpdate();
+        this.upgradeUpdate();
+    }
+}
+}
+
+const cursorUpgrade = new Upgrade("cursor", 100, cursor, 2);
+const grandmaUpgrade = new Upgrade("grandma", 500, grandma, 2);
+const mineUpgrade = new Upgrade("mine", 2000, mine, 2);
+const factoryUpgrade = new Upgrade("factory", 10000, factory, 2);
+
+setInterval(() => {
+    cursorUpgrade.upgradeUpdate();
+    grandmaUpgrade.upgradeUpdate();
+    mineUpgrade.upgradeUpdate();
+    factoryUpgrade.upgradeUpdate();
+}, 1000);
