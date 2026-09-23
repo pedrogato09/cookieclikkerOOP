@@ -16,11 +16,13 @@ const stats = {
 };
 const SAVE_KEY = "creamClickerSave";
 
-function countUpdate() {
-    count.innerText = cream;
-}
+count.innerText = 0;
+clickCount.innerText = 0;
+totalCreams.innerText = 0;
+totalCreamsSpent.innerText = 0;
 
 function statsUpdate() {
+    count.innerText = cream;
     clickCount.innerText = stats.clicks;
     totalCreams.innerText = stats.earned;
     totalCreamsSpent.innerText = stats.spent;
@@ -117,7 +119,6 @@ click.addEventListener("click", function() {
     cream += 1;
     stats.clicks += 1;
     stats.earned += 1;
-    countUpdate();
     statsUpdate();
 });
 
@@ -138,10 +139,10 @@ class Unit {
         this.store.addEventListener("click", () => {
             this.buy();
         });
-        this.unitUpdate();
+        this.update();
     }
 
-    unitUpdate() {
+    update() {
         this.units.innerText = this.count;
         this.cost.innerText = this.price;
     }
@@ -153,9 +154,8 @@ class Unit {
             stats.spent += cost;
             this.price = Math.round(this.basePrice * 1.2 ** (this.count + 1));
             this.count += 1;
-            countUpdate();
             statsUpdate();
-            this.unitUpdate();
+            this.update();
         }
     }
 
@@ -178,10 +178,11 @@ setInterval(() => {
     if (production > 0) {
         cream += production;
         stats.earned += production;
-        countUpdate();
         statsUpdate();
     }
 }, 1000);
+
+//Upgrades
 
 class Upgrade {
     constructor(name, price, unit, rate) {
@@ -197,10 +198,10 @@ class Upgrade {
         this.upgrade.addEventListener("click", () => {
             this.buy();
         });
-        this.upgradeUpdate();
+        this.update();
     }
 
-    upgradeUpdate() {
+    update() {
         this.cost.innerText = this.price;
     }
 
@@ -211,21 +212,14 @@ class Upgrade {
             stats.spent += cost;
             this.unit.rate *= this.rate;
             this.price = Math.round(this.price * 5);
-            countUpdate();
             statsUpdate();
             this.unit.unitUpdate();
-            this.upgradeUpdate();
+            this.update();
         }
     }
 }
 
-class CursorUpgrade extends Upgrade {
-    constructor() {
-        super("cursor", 100, cursor, 2);
-    }
-}
-
-const cursorUpgrade = new CursorUpgrade();
+const cursorUpgrade = new Upgrade("cursor", 100, cursor, 2);
 const grandmaUpgrade = new Upgrade("grandma", 500, grandma, 2);
 const mineUpgrade = new Upgrade("mine", 2000, mine, 2);
 const factoryUpgrade = new Upgrade("factory", 10000, factory, 2);
@@ -233,16 +227,7 @@ const laboratoryUpgrade = new Upgrade("laboratory", 50000, laboratory, 2);
 const creamfallUpgrade = new Upgrade("creamfall", 250000, creamfall, 2);
 const hydroplantUpgrade = new Upgrade("hydroplant", 1000000, hydroplant, 2);
 
-setInterval(() => {
-    cursorUpgrade.upgradeUpdate();
-    grandmaUpgrade.upgradeUpdate();
-    mineUpgrade.upgradeUpdate();
-    factoryUpgrade.upgradeUpdate();
-    laboratoryUpgrade.upgradeUpdate();
-    creamfallUpgrade.upgradeUpdate();
-    hydroplantUpgrade.upgradeUpdate();
-}, 1000);
-
+statsUpdate();
 function toggleStatsMenu() {
     const isOpen = statsContent.classList.toggle("open");
     statsButton.classList.toggle("open", isOpen);
@@ -260,8 +245,7 @@ if (saveButton) {
     });
 }
 
-countUpdate();
 statsUpdate();
 loadGame();
 
-
+
