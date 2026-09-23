@@ -2,19 +2,38 @@ let cream = 0;
 
 const click = document.getElementById("cream");
 const count = document.getElementById("creamCount");
+const clickCount = document.getElementById("clickCount");
+const totalCreams = document.getElementById("totalCreams");
+const totalCreamsSpent = document.getElementById("totalCreamsSpent");
 
-count.innerText = 0;
-function countUpdate(){count.innerText = cream;};
+const stats = {
+    clicks: 0,
+    earned: 0,
+    spent: 0
+};
+
+function countUpdate() {
+    count.innerText = cream;
+}
+
+function statsUpdate() {
+    clickCount.innerText = stats.clicks;
+    totalCreams.innerText = stats.earned;
+    totalCreamsSpent.innerText = stats.spent;
+}
 
 click.addEventListener("click", function() {
-    cream = cream + 1;
-    countUpdate()
-})
+    cream += 1;
+    stats.clicks += 1;
+    stats.earned += 1;
+    countUpdate();
+    statsUpdate();
+});
 
 //units
 
 class Unit {
-    constructor(name, price, rate){
+    constructor(name, price, rate) {
         this.name = name;
         this.count = 0;
         this.basePrice = price;
@@ -28,27 +47,29 @@ class Unit {
         this.store.addEventListener("click", () => {
             this.buy();
         });
-        this.unitUpdate()
-        
+        this.unitUpdate();
     }
 
-    unitUpdate(){
+    unitUpdate() {
         this.units.innerText = this.count;
         this.cost.innerText = this.price;
     }
 
-    buy(){
+    buy() {
         if (cream >= this.price) {
-            cream -= this.price;
-            this.price = Math.round(this.basePrice*1.2**(this.count + 1));
+            const cost = this.price;
+            cream -= cost;
+            stats.spent += cost;
+            this.price = Math.round(this.basePrice * 1.2 ** (this.count + 1));
             this.count += 1;
             countUpdate();
+            statsUpdate();
             this.unitUpdate();
         }
     }
 
-    prod(){
-        return Math.round(this.count*this.rate);
+    prod() {
+        return Math.round(this.count * this.rate);
     }
 }
 
@@ -62,17 +83,22 @@ const creamfall = new Unit("creamfall", 3310000, 14000);
 const hydroplant = new Unit("hydroplant", 27400000, 72000);
 
 setInterval(() => {
-    cream += cursor.prod() + grandma.prod() + mine.prod() + factory.prod();
-    countUpdate();
+    const production = cursor.prod() + grandma.prod() + farm.prod() + mine.prod() + factory.prod() + laboratory.prod() + creamfall.prod() + hydroplant.prod();
+    if (production > 0) {
+        cream += production;
+        stats.earned += production;
+        countUpdate();
+        statsUpdate();
+    }
 }, 1000);
 
 class Upgrade {
-    constructor(name, price, unit, rate){
+    constructor(name, price, unit, rate) {
         this.name = name;
         this.count = 0;
         this.unit = unit;
         this.price = price;
-        this.rate = rate; 
+        this.rate = rate;
 
         this.upgrade = document.getElementById(this.name + "Upgrade");
         this.cost = document.getElementById(this.name + "UpgradeCost");
@@ -80,19 +106,22 @@ class Upgrade {
         this.upgrade.addEventListener("click", () => {
             this.buy();
         });
-        this.upgradeUpdate()
+        this.upgradeUpdate();
     }
 
-    upgradeUpdate(){
+    upgradeUpdate() {
         this.cost.innerText = this.price;
     }
 
     buy() {
         if (cream >= this.price) {
-            cream -= this.price;
+            const cost = this.price;
+            cream -= cost;
+            stats.spent += cost;
             this.unit.rate *= this.rate;
             this.price = Math.round(this.price * 5);
             countUpdate();
+            statsUpdate();
             this.unit.unitUpdate();
             this.upgradeUpdate();
         }
@@ -122,3 +151,8 @@ setInterval(() => {
     creamfallUpgrade.upgradeUpdate();
     hydroplantUpgrade.upgradeUpdate();
 }, 1000);
+
+countUpdate();
+statsUpdate();
+
+
