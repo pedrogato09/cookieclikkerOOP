@@ -5,12 +5,16 @@ const count = document.getElementById("creamCount");
 const clickCount = document.getElementById("clickCount");
 const totalCreams = document.getElementById("totalCreams");
 const totalCreamsSpent = document.getElementById("totalCreamsSpent");
+const statsButton = document.getElementById("statsButton");
+const statsContent = document.getElementById("statsContent");
+const saveButton = document.getElementById("saveButton");
 
 const stats = {
     clicks: 0,
     earned: 0,
     spent: 0
 };
+const SAVE_KEY = "creamClickerSave";
 
 function countUpdate() {
     count.innerText = cream;
@@ -20,6 +24,93 @@ function statsUpdate() {
     clickCount.innerText = stats.clicks;
     totalCreams.innerText = stats.earned;
     totalCreamsSpent.innerText = stats.spent;
+}
+
+function saveGame() {
+    const saveData = {
+        cream,
+        stats,
+        units: {
+            cursor: { count: cursor.count, price: cursor.price, rate: cursor.rate },
+            grandma: { count: grandma.count, price: grandma.price, rate: grandma.rate },
+            farm: { count: farm.count, price: farm.price, rate: farm.rate },
+            mine: { count: mine.count, price: mine.price, rate: mine.rate },
+            factory: { count: factory.count, price: factory.price, rate: factory.rate },
+            laboratory: { count: laboratory.count, price: laboratory.price, rate: laboratory.rate },
+            creamfall: { count: creamfall.count, price: creamfall.price, rate: creamfall.rate },
+            hydroplant: { count: hydroplant.count, price: hydroplant.price, rate: hydroplant.rate }
+        },
+        upgrades: {
+            cursor: { price: cursorUpgrade.price, rate: cursorUpgrade.rate },
+            grandma: { price: grandmaUpgrade.price, rate: grandmaUpgrade.rate },
+            mine: { price: mineUpgrade.price, rate: mineUpgrade.rate },
+            factory: { price: factoryUpgrade.price, rate: factoryUpgrade.rate },
+            laboratory: { price: laboratoryUpgrade.price, rate: laboratoryUpgrade.rate },
+            creamfall: { price: creamfallUpgrade.price, rate: creamfallUpgrade.rate },
+            hydroplant: { price: hydroplantUpgrade.price, rate: hydroplantUpgrade.rate }
+        }
+    };
+
+    localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+}
+
+function loadGame() {
+    const savedGame = localStorage.getItem(SAVE_KEY);
+    if (!savedGame) return;
+
+    try {
+        const data = JSON.parse(savedGame);
+
+        if (!data) return;
+
+        cream = Number(data.cream) || 0;
+        stats.clicks = Number(data.stats?.clicks) || 0;
+        stats.earned = Number(data.stats?.earned) || 0;
+        stats.spent = Number(data.stats?.spent) || 0;
+
+        const units = data.units || {};
+        const unitMap = {
+            cursor,
+            grandma,
+            farm,
+            mine,
+            factory,
+            laboratory,
+            creamfall,
+            hydroplant
+        };
+
+        Object.keys(unitMap).forEach((name) => {
+            if (!units[name]) return;
+            unitMap[name].count = Number(units[name].count) || 0;
+            unitMap[name].price = Number(units[name].price) || unitMap[name].basePrice;
+            unitMap[name].rate = Number(units[name].rate) || unitMap[name].rate;
+            unitMap[name].unitUpdate();
+        });
+
+        const upgrades = data.upgrades || {};
+        const upgradeMap = {
+            cursor: cursorUpgrade,
+            grandma: grandmaUpgrade,
+            mine: mineUpgrade,
+            factory: factoryUpgrade,
+            laboratory: laboratoryUpgrade,
+            creamfall: creamfallUpgrade,
+            hydroplant: hydroplantUpgrade
+        };
+
+        Object.keys(upgradeMap).forEach((name) => {
+            if (!upgrades[name]) return;
+            upgradeMap[name].price = Number(upgrades[name].price) || upgradeMap[name].price;
+            upgradeMap[name].rate = Number(upgrades[name].rate) || upgradeMap[name].rate;
+            upgradeMap[name].upgradeUpdate();
+        });
+
+        countUpdate();
+        statsUpdate();
+    } catch (error) {
+        console.error("Save file is invalid:", error);
+    }
 }
 
 click.addEventListener("click", function() {
@@ -152,7 +243,25 @@ setInterval(() => {
     hydroplantUpgrade.upgradeUpdate();
 }, 1000);
 
+function toggleStatsMenu() {
+    const isOpen = statsContent.classList.toggle("open");
+    statsButton.classList.toggle("open", isOpen);
+    statsButton.setAttribute("aria-expanded", String(isOpen));
+}
+
+if (statsButton && statsContent) {
+    statsButton.addEventListener("click", toggleStatsMenu);
+}
+
+if (saveButton) {
+    saveButton.addEventListener("click", function() {
+        saveGame();
+        alert("Game opgeslagen!");
+    });
+}
+
 countUpdate();
 statsUpdate();
+loadGame();
 
 

@@ -29,10 +29,21 @@
 
 <div class="store">
 
-       <button id="statsButton">Statistieken</button>
-        <p>Clicks: <span id="clickCount"></span></p>
-        <p>Aantal creams verdiend: <span id="totalCreams"></span></p>
-        <p>Aantal creams uitgegeven: <span id="totalCreamsSpent"></span></p>
+       <div class="stats-menu">
+        <button id="statsButton" class="stats-toggle" aria-expanded="false" aria-controls="statsContent">
+            <span class="hamburger" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+            <span>Statistieken</span>
+        </button>
+        <div id="statsContent" class="stats-content">
+            <p>Clicks: <span id="clickCount"></span></p>
+            <p>Aantal creams verdiend: <span id="totalCreams"></span></p>
+            <p>Aantal creams uitgegeven: <span id="totalCreamsSpent"></span></p>
+        </div>
+    </div>
 
 <h2>Winkel</h2>
         
@@ -77,6 +88,11 @@
 <p>Price: <span id="creamfallUpgradeCost"></span> creams</p>
 <button id="hydroplantUpgrade">Hydroplant Upgrade</button>
 <p>Price: <span id="hydroplantUpgradeCost"></span> creams</p>   
+</div>
+
+<div class="opslaan">
+<h2>Opslaan</h2>
+<button id="saveButton">Save Game</button>
 </div>
 
 <script src="script.js"></script>
