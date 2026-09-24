@@ -1,4 +1,5 @@
 let cream = 0;
+let mouseClick = 1;
 
 const click = document.getElementById("cream");
 const count = document.getElementById("creamCount");
@@ -116,9 +117,9 @@ function loadGame() {
 }
 
 click.addEventListener("click", function() {
-    cream += 1;
+    cream += mouseClick;
     stats.clicks += 1;
-    stats.earned += 1;
+    stats.earned += mouseClick;
     statsUpdate();
 });
 
@@ -184,13 +185,13 @@ setInterval(() => {
 
 //Upgrades
 
-class Upgrade {
-    constructor(name, price, unit, rate) {
-        this.name = name;
+class Double {
+    constructor(unit, price) {
+        this.name = unit.name;
         this.count = 0;
         this.unit = unit;
         this.price = price;
-        this.rate = rate;
+        this.rate = 2;
 
         this.upgrade = document.getElementById(this.name + "Upgrade");
         this.cost = document.getElementById(this.name + "UpgradeCost");
@@ -212,22 +213,30 @@ class Upgrade {
             stats.spent += cost;
             this.unit.rate *= this.rate;
             this.price = Math.round(this.price * 5);
+            this.count += 1;
             statsUpdate();
-            this.unit.unitUpdate();
             this.update();
         }
     }
 }
 
-const cursorUpgrade = new Upgrade("cursor", 100, cursor, 2);
-const grandmaUpgrade = new Upgrade("grandma", 500, grandma, 2);
-const mineUpgrade = new Upgrade("mine", 2000, mine, 2);
-const factoryUpgrade = new Upgrade("factory", 10000, factory, 2);
-const laboratoryUpgrade = new Upgrade("laboratory", 50000, laboratory, 2);
-const creamfallUpgrade = new Upgrade("creamfall", 250000, creamfall, 2);
-const hydroplantUpgrade = new Upgrade("hydroplant", 1000000, hydroplant, 2);
+class DoubleClick extends Double {
+    constructor(unit, price) {
+        super(unit, price);
+        this.upgrade.addEventListener("click", () => {
+            mouseClick = this.count * this.rate;
+        });
+    }
+}
 
-statsUpdate();
+const cursorDouble = new DoubleClick(cursor, 100);
+const grandmaDouble = new Double(grandma, 500);
+const mineDouble = new Double(mine, 2000);
+const factoryDouble = new Double(factory, 10000);
+const laboratoryDouble = new Double(laboratory, 50000);
+const creamfallDouble = new Double(creamfall, 250000);
+const hydroplantDouble = new Double(hydroplant, 1000000);
+
 function toggleStatsMenu() {
     const isOpen = statsContent.classList.toggle("open");
     statsButton.classList.toggle("open", isOpen);
@@ -248,4 +257,4 @@ if (saveButton) {
 statsUpdate();
 loadGame();
 
-
+
