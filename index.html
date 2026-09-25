@@ -2,109 +2,116 @@
 <html lang="en">
 
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Cream Clicker</title>
-        <link rel="stylesheet" href="main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cream Clicker</title>
+<link rel="stylesheet" href="main.css">
 </head>
 
 <body>
-        <h1>Cream Clicker</h1>
-        <p>Cream: <span id="creamCount"></span></p>
-        <br>
-        <img src="thecream.png" width="400px" id="cream"></img>
+<h1>Cream Clicker</h1>
+<p>Cream: <span id="creamCount"></span></p>
+<br>
+<img src="thecream.png" width="400px" id="cream"></img>
 
 
-        <div class="units">
-                <h2>Productie Eenheden</h2>
-                <p>Cursor: <span id="cursorUnits"></span></p>
-                <p>Grandma: <span id="grandmaUnits"></span></p>
-                <p>Farm: <span id="farmUnits"></span></p>
-                <p>Mine: <span id="mineUnits"></span></p>
-                <p>Factory: <span id="factoryUnits"></span></p>
-                <p>Laboratory: <span id="laboratoryUnits"></span></p>
-                <p>Creamfall: <span id="creamfallUnits"></span></p>
-                <p>Hydroplant: <span id="hydroplantUnits"></span></p>
+<div class="units">
+<h2>Productie Eenheden</h2>
+<p>Cursor: <span id="cursorUnits"></span></p>
+<p>Grandma: <span id="grandmaUnits"></span></p>
+        <p>Farm: <span id="farmUnits"></span></p>
+<p>Mine: <span id="mineUnits"></span></p>
+<p>Factory: <span id="factoryUnits"></span></p>
+        <p>Laboratory: <span id="laboratoryUnits"></span></p>
+        <p>Creamfall: <span id="creamfallUnits"></span></p>
+        <p>Hydroplant: <span id="hydroplantUnits"></span></p>
+</div>
+ 
+<div class="theama's">
+    <nav class="menu">
+   <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" />
+   <label class="menu-open-button" for="menu-open">
+      <span class="lines line-1"></span>
+      <span class="lines line-2"></span>
+      <span class="lines line-3"></span>
+   </label>
+
+   <a href="#" class="menu-item red"> <i class="rood"></i> </a>
+   <a href="#" class="menu-item green"> <i class="groen"></i> </a>
+   <a href="#" class="menu-item blue"> <i class="blauw"></i> </a>
+   <a href="#" class="menu-item default-theme"> <i class="standaard"></i> </a>
+   
+</nav>
+
+       <div class="stats-menu">
+        <button id="statsButton" class="stats-toggle" aria-expanded="false" aria-controls="statsContent">
+            <span class="hamburger" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+            <span>Statistieken</span>
+        </button>
+        <div id="statsContent" class="stats-content">
+            <p>Clicks: <span id="clickCount"></span></p>
+            <p>Aantal creams verdiend: <span id="totalCreams"></span></p>
+            <p>Aantal creams uitgegeven: <span id="totalCreamsSpent"></span></p>
         </div>
+    </div>
 
-        <div class="store">
+<div class="store">
+<h2>Winkel</h2>
+        
+        <button id="cursorStore">Cursor</button>
+        <p>Price: <span id="cursorCost"></span> creams</p>
 
-                <div class="stats-menu">
-                        <button id="statsButton" class="stats-toggle" aria-expanded="false"
-                                aria-controls="statsContent">
-                                <span class="hamburger" aria-hidden="true">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                </span>
-                                <span>Statistieken</span>
-                        </button>
-                        <div id="statsContent" class="stats-content">
-                                <p>Clicks: <span id="clickCount"></span></p>
-                                <p>Aantal creams verdiend: <span id="totalCreams"></span></p>
-                                <p>Aantal creams uitgegeven: <span id="totalCreamsSpent"></span></p>
-                        </div>
-                </div>
+        <button id="grandmaStore">Grandma</button>
+        <p>Price: <span id="grandmaCost"></span> creams</p>
 
-                <h2>Winkel</h2>
+        <button id="farmStore">Farm</button>
+        <p>Price: <span id="farmCost"></span> creams</p>
 
-                <button id="cursorStore">Cursor</button>
-                <p>Price: <span id="cursorCost"></span> creams</p>
+        <button id="mineStore">Mine</button>
+        <p>Price: <span id="mineCost"></span> creams</p>
 
-                <button id="grandmaStore">Grandma</button>
-                <p>Price: <span id="grandmaCost"></span> creams</p>
+        <button id="factoryStore">Factory</button>
+        <p>Price: <span id="factoryCost"></span> creams</p>
 
-                <button id="farmStore">Farm</button>
-                <p>Price: <span id="farmCost"></span> creams</p>
+        <button id="laboratoryStore">Laboratory</button>
+        <p>Price: <span id="laboratoryCost"></span> creams</p>
 
-                <button id="mineStore">Mine</button>
-                <p>Price: <span id="mineCost"></span> creams</p>
+        <button id="creamfallStore">Creamfall</button>
+        <p>Price: <span id="creamfallCost"></span> creams</p>
 
-                <button id="factoryStore">Factory</button>
-                <p>Price: <span id="factoryCost"></span> creams</p>
+        <button id="hydroplantStore">Hydroplant</button>
+        <p>Price: <span id="hydroplantCost"></span> creams</p>
+</div>
 
-                <button id="laboratoryStore">Laboratory</button>
-                <p>Price: <span id="laboratoryCost"></span> creams</p>
+<div class="upgrades">
+<h2>Upgrades</h2>
+<button id="cursorUpgrade">Cursor Upgrade</button>
+<p>Price: <span id="cursorUpgradeCost"></span> creams</p>
+<button id="grandmaUpgrade">Grandma Upgrade</button>
+<p>Price: <span id="grandmaUpgradeCost"></span> creams</p>
+<button id="mineUpgrade">Mine Upgrade</button>
+<p>Price: <span id="mineUpgradeCost"></span> creams</p>
+<button id="factoryUpgrade">Factory Upgrade</button>
+<p>Price: <span id="factoryUpgradeCost"></span> creams</p>
+<button id="laboratoryUpgrade">Laboratory Upgrade</button>
+<p>Price: <span id="laboratoryUpgradeCost"></span> creams</p>
+<button id="creamfallUpgrade">Creamfall Upgrade</button>
+<p>Price: <span id="creamfallUpgradeCost"></span> creams</p>
+<button id="hydroplantUpgrade">Hydroplant Upgrade</button>
+<p>Price: <span id="hydroplantUpgradeCost"></span> creams</p>   
+</div>
 
-                <button id="creamfallStore">Creamfall</button>
-                <p>Price: <span id="creamfallCost"></span> creams</p>
+<div class="opslaan">
+<h2>Opslaan</h2>
+<button id="saveButton">Save Game</button>
+</div>
 
-                <button id="hydroplantStore">Hydroplant</button>
-                <p>Price: <span id="hydroplantCost"></span> creams</p>
-        </div>
+<script src="script.js"></script>
+</body> 
 
-        <div class="upgrades">
-                <h2>Upgrades</h2>
-
-                <button id="cursorUpgrade">Cursor Upgrade</button>
-                <p>Price: <span id="cursorUpgradeCost"></span> creams</p>
-
-                <button id="grandmaUpgrade">Grandma Upgrade</button>
-                <p>Price: <span id="grandmaUpgradeCost"></span> creams</p>
-
-                <button id="mineUpgrade">Mine Upgrade</button>
-                <p>Price: <span id="mineUpgradeCost"></span> creams</p>
-
-                <button id="factoryUpgrade">Factory Upgrade</button>
-                <p>Price: <span id="factoryUpgradeCost"></span> creams</p>
-
-                <button id="laboratoryUpgrade">Laboratory Upgrade</button>
-                <p>Price: <span id="laboratoryUpgradeCost"></span> creams</p>
-
-                <button id="creamfallUpgrade">Creamfall Upgrade</button>
-                <p>Price: <span id="creamfallUpgradeCost"></span> creams</p>
-                
-                <button id="hydroplantUpgrade">Hydroplant Upgrade</button>
-                <p>Price: <span id="hydroplantUpgradeCost"></span> creams</p>
-
-                <button id="cursorBonusUpgrade">Cursor Bonus</button>
                 <p>Price: <span id="cursorBonusUpgradeCost"></span> creams</p>
-        </div>
-
-        <div class="opslaan">
-                <h2>Opslaan</h2>
-                <button id="saveButton">Save Game</button>
-        </div>
-
-        <script src="script.js"></script>
-</body>
+                <button id="cursorBonusUpgrade">Cursor Bonus</button>
