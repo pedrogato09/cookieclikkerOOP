@@ -1,4 +1,4 @@
-let cream = 10000000000;
+let cream = 0;
 let mouseClick = 1;
 
 const click = document.getElementById("cream");
