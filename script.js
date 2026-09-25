@@ -97,11 +97,7 @@ const hydroplant = new Unit("hydroplant", 27400000, 72000);
  
 setInterval(() => { 
     const prod = cursor.prod() + grandma.prod() + farm.prod() + mine.prod() + factory.prod() + laboratory.prod() + creamfall.prod() + hydroplant.prod() + ClickBonus.bonus; 
-    if (prodBonus.count > 0) {
-        production = Math.round(prod * prodBonus.bonus);
-    }else{
-        production = prod
-    }
+    production = Math.round(prod * prodBonus.bonus * totalClick.bonus);
     if (production > 0) { 
         cream += production; 
         stats.earned += production; 
@@ -196,7 +192,7 @@ class ProductionBonus {
         this.price = price;
         this.factor = factor;
         this.count = 0;
-        this.bonus = 0;
+        this.bonus = 1;
 
         this.upgrade = document.getElementById(this.name + "Upgrade"); 
         this.cost = document.getElementById(this.name + "UpgradeCost"); 
@@ -216,12 +212,25 @@ class ProductionBonus {
             stats.spent += this.price; 
             this.price = Math.round(this.price * 5); 
             this.count += 1;
-            this.bonus = this.count * this.factor + 1.0;
+            if (this.clicky === true){
+                this.bonus = this.count * this.factor * stats.clicks + 1.0;
+            }else{
+                this.bonus = this.count * this.factor + 1.0;
+            }
             statsUpdate(); 
             this.update(); 
         } 
     }
 }
+
+class TotalClick extends ProductionBonus {
+    constructor(name, price, factor) {
+        super(name, price, factor);
+        this.clicky = true;
+    }
+}
+
+const totalClick = new TotalClick("totalClick", 600000000, 0.00001)
 
 const prodBonus = new ProductionBonus("prodBonus", 8000000, 0.1);
  
