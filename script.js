@@ -1,4 +1,5 @@
 let cream = 0;
+let mouseClick = 1;
 
 const click = document.getElementById("cream");
 const count = document.getElementById("creamCount");
@@ -29,11 +30,8 @@ const stats = {
 };
 const SAVE_KEY = "creamClickerSave";
 
-function countUpdate() {
-    count.innerText = cream;
-}
-
 function statsUpdate() {
+    count.innerText = cream;
     clickCount.innerText = stats.clicks;
     totalCreams.innerText = stats.earned;
     totalCreamsSpent.innerText = stats.spent;
@@ -43,171 +41,160 @@ function statsUpdate() {
 
 
 
-//units
-
-class Unit {
-    static total = 0;
-
-    constructor(name, price, rate) {
-        this.name = name;
-        this.count = 0;
-        this.basePrice = price;
-        this.price = price;
-        this.rate = rate;
-
-        this.units = document.getElementById(this.name + "Units");
-        this.store = document.getElementById(this.name + "Store");
-        this.cost = document.getElementById(this.name + "Cost");
-
-        this.store.addEventListener("click", () => {
-            this.buy();
-        });
-        this.unitUpdate();
+//units 
+ 
+class Unit { 
+    static total = 0; 
+ 
+    constructor(name, price, rate) { 
+        this.name = name; 
+        this.count = 0; 
+        this.basePrice = price; 
+        this.price = price; 
+        this.rate = rate; 
+ 
+        this.units = document.getElementById(this.name + "Units"); 
+        this.store = document.getElementById(this.name + "Store"); 
+        this.cost = document.getElementById(this.name + "Cost"); 
+ 
+        this.store.addEventListener("click", () => { 
+            this.buy(); 
+        }); 
+        this.update(); 
+    } 
+ 
+    update() { 
+        this.units.innerText = this.count; 
+        this.cost.innerText = this.price; 
+    } 
+ 
+    buy() { 
+        if (cream >= this.price) { 
+            const cost = this.price; 
+            cream -= cost; 
+            stats.spent += cost; 
+            this.price = Math.round(this.basePrice * 1.2 ** (this.count + 1)); 
+            this.count += 1; 
+            Unit.total += 1; 
+            statsUpdate(); 
+            this.update(); 
+        } 
+    } 
+ 
+    prod() { 
+        return Math.round(this.count * this.rate); 
+    } 
+} 
+ 
+const cursor = new Unit("cursor", 15, 1); 
+const grandma = new Unit("grandma", 100, 5); 
+const farm = new Unit("farm", 800, 25); 
+const mine = new Unit("mine", 6400, 120); 
+const factory = new Unit("factory", 51000, 600); 
+const laboratory = new Unit("laboratory", 408000, 3000); 
+const creamfall = new Unit("creamfall", 3310000, 14000); 
+const hydroplant = new Unit("hydroplant", 27400000, 72000); 
+ 
+setInterval(() => { 
+    const production = cursor.prod() + grandma.prod() + farm.prod() + mine.prod() + factory.prod() + laboratory.prod() + creamfall.prod() + hydroplant.prod() + ClickBonus.bonus; 
+    if (production > 0) { 
+        cream += production; 
+        stats.earned += production; 
+        statsUpdate(); 
     }
-
-    unitUpdate() {
-        this.units.innerText = this.count;
-        this.cost.innerText = this.price;
-    }
-
-    buy() {
-        if (cream >= this.price) {
-            const cost = this.price;
-            cream -= cost;
-            stats.spent += cost;
-            this.price = Math.round(this.basePrice * 1.2 ** (this.count + 1));
-            this.count += 1;
-            Unit.total += 1;
-            statsUpdate();
-            this.unitUpdate();
-        }
-    }
-
-    prod() {
-        return Math.round(this.count * this.rate);
-    }
-}
-
-const cursor = new Unit("cursor", 15, 1);
-const grandma = new Unit("grandma", 100, 5);
-const farm = new Unit("farm", 800, 25);
-const mine = new Unit("mine", 6400, 120);
-const factory = new Unit("factory", 51000, 600);
-const laboratory = new Unit("laboratory", 408000, 3000);
-const creamfall = new Unit("creamfall", 3310000, 14000);
-const hydroplant = new Unit("hydroplant", 27400000, 72000);
-
-setInterval(() => {
-    const production = cursor.prod() + grandma.prod() + farm.prod() + mine.prod() + factory.prod() + laboratory.prod() + creamfall.prod() + hydroplant.prod() + ClickBonus.bonus;
-    if (production > 0) {
-        cream += production;
-        stats.earned += production;
-        countUpdate();
-        statsUpdate();
-    }
-    console.log(mouseClick, Unit.total, ClickBonus.bonus, cursor.prod());
-}, 1000);
-
-class Upgrade {
-    constructor(name, price, unit, rate) {
-        this.name = name;
-        this.count = 0;
-        this.unit = unit;
-        this.price = price;
-        this.rate = rate;
-
-        this.upgrade = document.getElementById(this.name + "Upgrade");
-        this.cost = document.getElementById(this.name + "UpgradeCost");
-
-        this.upgrade.addEventListener("click", () => {
-            this.buy();
-        });
-        this.upgradeUpdate();
-    }
-
-    upgradeUpdate() {
-        this.cost.innerText = this.price;
-    }
-
-    buy() {
-        if (cream >= this.price) {
-            const cost = this.price;
-            cream -= cost;
-            stats.spent += cost;
-            this.unit.rate *= this.rate;
-            this.price = Math.round(this.price * 5);
-            countUpdate();
-            statsUpdate();
-            this.unit.unitUpdate();
-            this.upgradeUpdate();
-        }
-    }
-}
-
-class DoubleClick extends Double {
-    static clicks = 1;
-    constructor(unit, price) {
-        super(unit, price);
-        this.upgrade.addEventListener("click", () => {
-            DoubleClick.clicks = this.rate ** this.count;
-            statsUpdate()
-        });
-    }
-}
-
-class ClickBonus {
-    static bonus = 0;
-    constructor(unit, price) {
-        this.name = `${unit.name}Bonus`;
-        this.unit = unit;
-        this.price = price;
-        this.count = 0;
-
-        this.upgrade = document.getElementById(this.name + "Upgrade");
-        this.cost = document.getElementById(this.name + "UpgradeCost");
-
-        this.upgrade.addEventListener("click", () => {
-            this.buy()
-        });
-         this.update();
-    }
-
-    update() {
-        this.cost.innerText = this.price;
-    }
-
-    buy() {
-        if (cream >= this.price) {
-            cream -= this.price;
-            stats.spent += this.price;
-            this.price = Math.round(this.price * 5);
-            this.count += 1;
-            statsUpdate();
-            this.update();
-        }
-    }
-}
-
-const cursorBonus = new ClickBonus(cursor, 500000);
-
-const cursorDouble = new DoubleClick(cursor, 100);
-
-const grandmaDouble = new Double(grandma, 500);
-const mineDouble = new Double(mine, 2000);
-const factoryDouble = new Double(factory, 10000);
-const laboratoryDouble = new Double(laboratory, 50000);
-const creamfallDouble = new Double(creamfall, 250000);
+}, 1000); 
+ 
+//Upgrades 
+ 
+class Double { 
+    constructor(unit, price) { 
+        this.name = unit.name; 
+        this.count = 0; 
+        this.unit = unit; 
+        this.price = price; 
+        this.rate = 2; 
+ 
+        this.upgrade = document.getElementById(this.name + "Upgrade"); 
+        this.cost = document.getElementById(this.name + "UpgradeCost"); 
+ 
+        this.upgrade.addEventListener("click", () => { 
+            this.buy(); 
+        }); 
+        this.update(); 
+    } 
+ 
+    update() { 
+        this.cost.innerText = this.price; 
+    } 
+ 
+    buy() { 
+        if (cream >= this.price) { 
+            const cost = this.price; 
+            cream -= cost; 
+            stats.spent += cost; 
+            this.unit.rate *= this.rate; 
+            this.price = Math.round(this.price * 5); 
+            this.count += 1; 
+            statsUpdate(); 
+            this.update(); 
+        } 
+    } 
+} 
+ 
+class DoubleClick extends Double { 
+    static clicks = 1; 
+    constructor(unit, price) { 
+        super(unit, price); 
+        this.upgrade.addEventListener("click", () => { 
+            DoubleClick.clicks = this.rate ** this.count; 
+            statsUpdate() 
+        }); 
+    } 
+} 
+ 
+class ClickBonus { 
+    static bonus = 0; 
+    constructor(unit, price) { 
+        this.name = `${unit.name}Bonus`; 
+        this.unit = unit; 
+        this.price = price; 
+        this.count = 0; 
+ 
+        this.upgrade = document.getElementById(this.name + "Upgrade"); 
+        this.cost = document.getElementById(this.name + "UpgradeCost"); 
+ 
+        this.upgrade.addEventListener("click", () => { 
+            this.buy() 
+        }); 
+         this.update(); 
+    } 
+ 
+    update() { 
+        this.cost.innerText = this.price; 
+    } 
+ 
+    buy() { 
+        if (cream >= this.price) { 
+            cream -= this.price; 
+            stats.spent += this.price; 
+            this.price = Math.round(this.price * 5); 
+            this.count += 1; 
+            statsUpdate(); 
+            this.update(); 
+        } 
+    } 
+} 
+ 
+const cursorBonus = new ClickBonus(cursor, 500000); 
+ 
+const cursorDouble = new DoubleClick(cursor, 100); 
+ 
+const grandmaDouble = new Double(grandma, 500); 
+const mineDouble = new Double(mine, 2000); 
+const factoryDouble = new Double(factory, 10000); 
+const laboratoryDouble = new Double(laboratory, 50000); 
+const creamfallDouble = new Double(creamfall, 250000); 
 const hydroplantDouble = new Double(hydroplant, 1000000);
-
-setInterval(() => {
-    cursorUpgrade.upgradeUpdate();
-    grandmaUpgrade.upgradeUpdate();
-    mineUpgrade.upgradeUpdate();
-    factoryUpgrade.upgradeUpdate();
-    laboratoryUpgrade.upgradeUpdate();
-    creamfallUpgrade.upgradeUpdate();
-    hydroplantUpgrade.upgradeUpdate();
-}, 1000);
 
 function toggleStatsMenu() {
     const isOpen = statsContent.classList.toggle("open");
@@ -324,7 +311,6 @@ function loadGame() {
             upgradeMap[name].upgradeUpdate();
         });
 
-        countUpdate();
         statsUpdate();
     } catch (error) {
         console.error("Save file is invalid:", error);
@@ -336,11 +322,9 @@ click.addEventListener("click", function() {
     stats.clicks += 1;
     stats.earned += 1;
     shakeCream();
-    countUpdate();
     statsUpdate();
 });
 
-countUpdate();
 statsUpdate();
 loadGame();
 
