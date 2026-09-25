@@ -1,4 +1,4 @@
-let cream = 0;
+let cream = 10000000000;
 let mouseClick = 1;
 
 const click = document.getElementById("cream");
@@ -96,7 +96,12 @@ const creamfall = new Unit("creamfall", 3310000, 14000);
 const hydroplant = new Unit("hydroplant", 27400000, 72000); 
  
 setInterval(() => { 
-    const production = cursor.prod() + grandma.prod() + farm.prod() + mine.prod() + factory.prod() + laboratory.prod() + creamfall.prod() + hydroplant.prod() + ClickBonus.bonus; 
+    const prod = cursor.prod() + grandma.prod() + farm.prod() + mine.prod() + factory.prod() + laboratory.prod() + creamfall.prod() + hydroplant.prod() + ClickBonus.bonus; 
+    if (prodBonus.count > 0) {
+        production = Math.round(prod * prodBonus.bonus);
+    }else{
+        production = prod
+    }
     if (production > 0) { 
         cream += production; 
         stats.earned += production; 
@@ -166,7 +171,7 @@ class ClickBonus {
         this.upgrade.addEventListener("click", () => { 
             this.buy() 
         }); 
-         this.update(); 
+        this.update(); 
     } 
  
     update() { 
@@ -184,6 +189,41 @@ class ClickBonus {
         } 
     } 
 } 
+
+class ProductionBonus {
+    constructor(name, price, factor) {
+        this.name = name;
+        this.price = price;
+        this.factor = factor;
+        this.count = 0;
+        this.bonus = 0;
+
+        this.upgrade = document.getElementById(this.name + "Upgrade"); 
+        this.cost = document.getElementById(this.name + "UpgradeCost"); 
+        this.upgrade.addEventListener("click", () => { 
+            this.buy() 
+        }); 
+        this.update(); 
+    } 
+ 
+    update() { 
+        this.cost.innerText = this.price; 
+    }
+
+    buy() { 
+        if (cream >= this.price) { 
+            cream -= this.price; 
+            stats.spent += this.price; 
+            this.price = Math.round(this.price * 5); 
+            this.count += 1;
+            this.bonus = this.count * this.factor + 1.0;
+            statsUpdate(); 
+            this.update(); 
+        } 
+    }
+}
+
+const prodBonus = new ProductionBonus("prodBonus", 8000000, 0.1);
  
 const cursorBonus = new ClickBonus(cursor, 500000); 
  
