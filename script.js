@@ -1,3 +1,8 @@
+//  ===============================================================
+//      Set Variables
+//  ===============================================================
+
+
 let cream = 0;
 let mouseClick = 1;
 
@@ -10,25 +15,25 @@ const statsButton = document.getElementById("statsButton");
 const statsContent = document.getElementById("statsContent");
 const saveButton = document.getElementById("saveButton");
 
-function shakeCream() {
-    click.style.transform = "rotate(-8deg)";
-    click.style.transition = "transform 0.05s ease";
-
-    setTimeout(() => {
-        click.style.transform = "rotate(8deg)";
-    }, 60);
-
-    setTimeout(() => {
-        click.style.transform = "rotate(0deg)";
-    }, 120);
-}
-
 const stats = {
     clicks: 0,
     earned: 0,
     spent: 0
 };
-const SAVE_KEY = "creamClickerSave";
+
+
+//  ===============================================================
+//      Clicking and Updating
+//  ===============================================================
+
+
+click.addEventListener("click", function() {
+    cream += 1;
+    stats.clicks += 1;
+    stats.earned += 1;
+    shakeCream();
+    statsUpdate();
+});
 
 function statsUpdate() {
     count.innerText = cream;
@@ -40,8 +45,10 @@ function statsUpdate() {
 }
 
 
+//  ===============================================================
+//      Units 
+//  ===============================================================
 
-//units 
  
 class Unit { 
     static total = 0; 
@@ -105,7 +112,11 @@ setInterval(() => {
     }
 }, 1000); 
  
-//Upgrades 
+
+//  ===============================================================
+//      Upgrades 
+//  ===============================================================
+
  
 class Double { 
     constructor(unit, price) { 
@@ -245,6 +256,25 @@ const laboratoryDouble = new Double(laboratory, 50000);
 const creamfallDouble = new Double(creamfall, 250000); 
 const hydroplantDouble = new Double(hydroplant, 1000000);
 
+
+//  ===============================================================
+//      Styling
+//  ===============================================================
+
+
+function shakeCream() {
+    click.style.transform = "rotate(-8deg)";
+    click.style.transition = "transform 0.05s ease";
+
+    setTimeout(() => {
+        click.style.transform = "rotate(8deg)";
+    }, 60);
+
+    setTimeout(() => {
+        click.style.transform = "rotate(0deg)";
+    }, 120);
+}
+
 function toggleStatsMenu() {
     const isOpen = statsContent.classList.toggle("open");
     statsButton.classList.toggle("open", isOpen);
@@ -279,6 +309,14 @@ themeButtons.forEach((button) => {
         }
     });
 });
+
+
+//  ===============================================================
+//      Saving and Loading
+//  ===============================================================
+
+
+const SAVE_KEY = "creamClickerSave";
 
 function saveGame() {
     const saveData = {
@@ -366,15 +404,11 @@ function loadGame() {
     }
 }
 
-click.addEventListener("click", function() {
-    cream += 1;
-    stats.clicks += 1;
-    stats.earned += 1;
-    shakeCream();
-    statsUpdate();
-});
+
+//  ===============================================================
+//      Call Functions
+//  ===============================================================
+
 
 statsUpdate();
 loadGame();
-
-
