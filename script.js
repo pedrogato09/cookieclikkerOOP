@@ -5,13 +5,21 @@
 
 let cream = 0;
 let mouseClick = 1;
+let production = 0;
 let earningMultiplier = 1;
 let bonusCountdownInterval;
+const QTE_CYCLE_DURATION = 15 * 60 * 1000;
+const QTE_VISIBLE_DURATION = QTE_CYCLE_DURATION * 0.009;
+let qteCycleStartedAt = Date.now();
+let qteCollected = false;
+let qteCountdownInterval;
 
 const click = document.getElementById("cream");
 const flyingBonus = document.getElementById("flyingBonus");
 const bonusTimer = document.getElementById("bonusTimer");
+const qteTimer = document.getElementById("qteTimer");
 const count = document.getElementById("creamCount");
+const creamPerSecond = document.getElementById("creamPerSecond");
 const clickCount = document.getElementById("clickCount");
 const totalCreams = document.getElementById("totalCreams");
 const totalCreamsSpent = document.getElementById("totalCreamsSpent");
@@ -24,6 +32,53 @@ const stats = {
     earned: 0,
     spent: 0
 };
+
+const numberSuffixes = [
+    { value: 1e3, suffix: "k" },
+    { value: 1e6, suffix: "m" },
+    { value: 1e9, suffix: "md" },
+    { value: 1e12, suffix: "b" },
+    { value: 1e15, suffix: "bd" },
+    { value: 1e18, suffix: "t" },
+    { value: 1e21, suffix: "td" },
+    { value: 1e24, suffix: "q" },
+    { value: 1e27, suffix: "qd" },
+    { value: 1e30, suffix: "qq" },
+    { value: 1e33, suffix: "qqd" },
+    { value: 1e36, suffix: "sx" },
+    { value: 1e39, suffix: "sxd" },
+    { value: 1e42, suffix: "sp" },
+    { value: 1e45, suffix: "spd" },
+    { value: 1e48, suffix: "oc" },
+    { value: 1e51, suffix: "ocd" },
+    { value: 1e54, suffix: "no" },
+    { value: 1e57, suffix: "nod" },
+    { value: 1e60, suffix: "dc" },
+    { value: 1e63, suffix: "dcd" }
+];
+
+function formatNumber(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return String(value);
+
+    let divisor = 1;
+    let suffix = "";
+
+    numberSuffixes.forEach((option) => {
+        if (number >= option.value) {
+            divisor = option.value;
+            suffix = option.suffix;
+        }
+    });
+
+    if (!suffix) {
+        return new Intl.NumberFormat("nl-NL").format(number);
+    }
+
+    const shortened = Math.floor((number / divisor) * 10) / 10;
+    const formatted = new Intl.NumberFormat("nl-NL", { maximumFractionDigits: 1 }).format(shortened);
+    return `${formatted}${suffix}`;
+}
 
 //  ===============================================================
 //      Clicking and Updating
@@ -40,10 +95,12 @@ click.addEventListener("click", function() {
 });
 
 function statsUpdate() {
-    count.innerText = cream;
-    clickCount.innerText = stats.clicks;
-    totalCreams.innerText = stats.earned;
-    totalCreamsSpent.innerText = stats.spent;
+    count.innerText = formatNumber(cream);
+    creamPerSecond.innerText = formatNumber(production);
+    clickCount.innerText = formatNumber(stats.clicks);
+    totalCreams.innerText = formatNumber(stats.earned);
+    totalCreamsSpent.innerText = formatNumber(stats.spent);
+    updateThemeUnlocks();
     ClickBonus.bonus = Unit.total * cursorBonus.count;
     mouseClick = DoubleClick.clicks + ClickBonus.bonus;
 }
@@ -75,8 +132,8 @@ class Unit {
     } 
  
     update() { 
-        this.units.innerText = this.count; 
-        this.cost.innerText = this.price; 
+        this.units.innerText = formatNumber(this.count); 
+        this.cost.innerText = formatNumber(this.price); 
     } 
  
     buy() { 
@@ -140,7 +197,7 @@ class Double {
     } 
  
     update() { 
-        this.cost.innerText = this.price; 
+        this.cost.innerText = formatNumber(this.price); 
     } 
  
     buy() { 
@@ -186,7 +243,7 @@ class ClickBonus {
     } 
  
     update() { 
-        this.cost.innerText = this.price; 
+        this.cost.innerText = formatNumber(this.price); 
     } 
  
     buy() { 
@@ -218,7 +275,7 @@ class ProductionBonus {
     } 
  
     update() { 
-        this.cost.innerText = this.price; 
+        this.cost.innerText = formatNumber(this.price);
     }
 
     buy() { 
@@ -263,6 +320,8 @@ const hydroplantDouble = new Double(hydroplant, 1000000);
 flyingBonus.addEventListener("click", () => {
     earningMultiplier = 2;
     flyingBonus.classList.add("collected");
+    qteCollected = true;
+    updateQteTimer();
 
     clearInterval(bonusCountdownInterval);
     const expiresAt = Date.now() + 60_000;
@@ -288,7 +347,26 @@ flyingBonus.addEventListener("click", () => {
 
 flyingBonus.addEventListener("animationiteration", () => {
     flyingBonus.classList.remove("collected");
+    qteCollected = false;
+    updateQteTimer();
 });
+
+function updateQteTimer() {
+    const elapsed = (Date.now() - qteCycleStartedAt) % QTE_CYCLE_DURATION;
+
+    if (!qteCollected && elapsed < QTE_VISIBLE_DURATION) {
+        qteTimer.innerText = "Quick-time-event: actief";
+        return;
+    }
+
+    const remainingSeconds = Math.ceil((QTE_CYCLE_DURATION - elapsed) / 1000);
+    const minutes = Math.floor(remainingSeconds / 60);
+    const seconds = String(remainingSeconds % 60).padStart(2, "0");
+    qteTimer.innerText = `Volgend quick-time-event: ${minutes}:${seconds}`;
+}
+
+updateQteTimer();
+qteCountdownInterval = setInterval(updateQteTimer, 1000);
 
 
 //  ===============================================================
@@ -328,9 +406,39 @@ if (saveButton) {
 
 const themeButtons = document.querySelectorAll(".menu-item.red, .menu-item.green, .menu-item.blue, .menu-item.default-theme");
 
+const themeUnlockRequirements = {
+    red: { creams: 1_000_000, label: "1 miljoen" },
+    blue: { creams: 1_000_000_000_000, label: "1 biljoen" },
+    green: { creams: 1_000_000_000_000_000_000, label: "1 triljoen" }
+};
+
+function updateThemeUnlocks() {
+    Object.entries(themeUnlockRequirements).forEach(([theme, requirement]) => {
+        const button = Array.from(themeButtons).find((item) => item.classList.contains(theme));
+        if (!button) return;
+
+        const locked = stats.earned < requirement.creams;
+        const unlockMessage = `${formatNumber(requirement.creams)} creams nodig`;
+        button.classList.toggle("locked", locked);
+        button.setAttribute("aria-disabled", String(locked));
+        button.setAttribute("aria-label", locked
+            ? `${theme} thema, ${unlockMessage}`
+            : `Selecteer ${theme} thema`);
+        button.title = locked
+            ? unlockMessage
+            : `Selecteer ${theme} thema`;
+        if (locked) {
+            button.dataset.unlockLabel = unlockMessage;
+        } else {
+            delete button.dataset.unlockLabel;
+        }
+    });
+}
+
 themeButtons.forEach((button) => {
     button.addEventListener("click", (event) => {
         event.preventDefault();
+        if (button.classList.contains("locked")) return;
 
         document.body.classList.remove("theme-red", "theme-green", "theme-blue");
 
