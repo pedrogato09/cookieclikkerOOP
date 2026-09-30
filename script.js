@@ -312,7 +312,7 @@ themeButtons.forEach((button) => {
 
 
 //  ===============================================================
-//      Saving and Loading
+//      Saving, Loading and Resetting
 //  ===============================================================
 
 
@@ -404,6 +404,12 @@ function loadGame() {
     }
 }
 
+document.getElementById("resetButton").addEventListener("click", () => {
+    if (!confirm("Weet je zeker dat je opnieuw wilt beginnen?")) return;
+
+    localStorage.removeItem(SAVE_KEY);
+    location.reload();
+});
 
 //  ===============================================================
 //      Call Functions
