@@ -5,8 +5,12 @@
 
 let cream = 0;
 let mouseClick = 1;
+let earningMultiplier = 1;
+let bonusCountdownInterval;
 
 const click = document.getElementById("cream");
+const flyingBonus = document.getElementById("flyingBonus");
+const bonusTimer = document.getElementById("bonusTimer");
 const count = document.getElementById("creamCount");
 const clickCount = document.getElementById("clickCount");
 const totalCreams = document.getElementById("totalCreams");
@@ -21,16 +25,16 @@ const stats = {
     spent: 0
 };
 
-
 //  ===============================================================
 //      Clicking and Updating
 //  ===============================================================
 
 
 click.addEventListener("click", function() {
-    cream += 1;
+    const earned = earningMultiplier;
+    cream += earned;
     stats.clicks += 1;
-    stats.earned += 1;
+    stats.earned += earned;
     shakeCream();
     statsUpdate();
 });
@@ -104,7 +108,7 @@ const hydroplant = new Unit("hydroplant", 27400000, 72000);
  
 setInterval(() => { 
     const prod = cursor.prod() + grandma.prod() + farm.prod() + mine.prod() + factory.prod() + laboratory.prod() + creamfall.prod() + hydroplant.prod() + ClickBonus.bonus; 
-    production = Math.round(prod * prodBonus.bonus * totalClick.bonus);
+    production = Math.round(prod * prodBonus.bonus * totalClick.bonus * earningMultiplier);
     if (production > 0) { 
         cream += production; 
         stats.earned += production; 
@@ -255,6 +259,36 @@ const factoryDouble = new Double(factory, 10000);
 const laboratoryDouble = new Double(laboratory, 50000); 
 const creamfallDouble = new Double(creamfall, 250000); 
 const hydroplantDouble = new Double(hydroplant, 1000000);
+
+flyingBonus.addEventListener("click", () => {
+    earningMultiplier = 2;
+    flyingBonus.classList.add("collected");
+
+    clearInterval(bonusCountdownInterval);
+    const expiresAt = Date.now() + 60_000;
+
+    const updateBonusTimer = () => {
+        const remainingSeconds = Math.max(0, Math.ceil((expiresAt - Date.now()) / 1000));
+
+        if (remainingSeconds === 0) {
+            earningMultiplier = 1;
+            bonusTimer.innerText = "Bonus: niet actief";
+            clearInterval(bonusCountdownInterval);
+            return;
+        }
+
+        const minutes = Math.floor(remainingSeconds / 60);
+        const seconds = String(remainingSeconds % 60).padStart(2, "0");
+        bonusTimer.innerText = `x2 actief: ${minutes}:${seconds}`;
+    };
+
+    updateBonusTimer();
+    bonusCountdownInterval = setInterval(updateBonusTimer, 1000);
+});
+
+flyingBonus.addEventListener("animationiteration", () => {
+    flyingBonus.classList.remove("collected");
+});
 
 
 //  ===============================================================
