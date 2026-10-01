@@ -31,7 +31,7 @@ body.theme-blue {
 
 .game-layout {
    display: grid;
-   grid-template-columns: minmax(220px, 260px) minmax(280px, 1fr) minmax(300px, 360px);
+   grid-template-columns: minmax(280px, 320px) minmax(280px, 1fr) minmax(300px, 360px);
    align-items: start;
    gap: 24px;
    width: calc(100% + 8px);
@@ -68,7 +68,7 @@ body.theme-blue {
    align-items: start;
    column-gap: 16px;
    row-gap: 16px;
-   margin-bottom: 48px;
+   margin-bottom: 68px;
 }
 
 .game-controls .menu {
@@ -80,8 +80,7 @@ body.theme-blue {
    position: relative;
    justify-self: end;
    width: 90px;
-   height: auto;
-   min-height: 28px;
+   height: 28px;
 }
 
 .game-controls .opslaan {
@@ -164,6 +163,37 @@ body.theme-blue {
    border-bottom: 1px solid #aaaaaa;
 }
 
+.store-item {
+   padding: 8px 4px;
+   border-bottom: 1px solid #555555;
+}
+
+.store-item-name {
+   display: block;
+   width: 100%;
+   padding: 0;
+   border: 0;
+   background: transparent;
+   color: inherit;
+   font-size: 26px;
+   font-weight: 400;
+   line-height: 1.2;
+   text-align: left;
+   cursor: pointer;
+}
+
+.store-item-name:hover {
+   text-decoration: underline;
+}
+
+.store-item-details {
+   display: flex;
+   justify-content: space-between;
+   gap: 8px;
+   margin-top: 2px;
+   font-size: 11px;
+}
+
 @media (max-width: 960px) {
    h1 {
       margin-top: 15px;
@@ -171,7 +201,7 @@ body.theme-blue {
    }
 
    .game-layout {
-      grid-template-columns: minmax(120px, 28vw) minmax(200px, 2fr) minmax(97px, 20vw);
+      grid-template-columns: minmax(170px, 34vw) minmax(160px, 2fr) minmax(120px, 20vw);
       gap: 8px;
       width: calc(100% + 8px);
    }
@@ -207,6 +237,10 @@ body.theme-blue {
       padding: 0 0 0 12px;
       border-top: 0;
       border-left: 1px solid #aaaaaa;
+   }
+
+   .store-item-name {
+      font-size: 18px;
    }
 }
 
@@ -560,6 +594,9 @@ body.theme-blue {
 
 .game-controls .theme-choice {
    display: none;
+   position: absolute;
+   left: 0;
+   z-index: 40;
    box-sizing: border-box;
    width: 100%;
    padding: 5px 7px;
@@ -579,8 +616,20 @@ body.theme-blue {
    display: block;
 }
 
-.game-controls .menu-open:checked ~ .theme-choice:first-of-type {
-   margin-top: 32px;
+.game-controls .theme-choice.red {
+   top: 32px;
+}
+
+.game-controls .theme-choice.green {
+   top: 62px;
+}
+
+.game-controls .theme-choice.blue {
+   top: 92px;
+}
+
+.game-controls .theme-choice.default-theme {
+   top: 122px;
 }
 
 .game-controls .theme-choice.locked {
