@@ -410,16 +410,6 @@ body.theme-blue {
    transition-delay: 0.48s;
    transform: translate3d(-0.25084px, -104.9997px, 0);
 }
-.menu-open-button,
-.red,
-.orange,
-.gold,
-.green,
-.blue,
-.indigo {
-   box-shadow: 3px 3px 10px 0 rgba(178, 34, 34, 0.5);
-   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.12);
-}
 
 .red {
    background-color: red;

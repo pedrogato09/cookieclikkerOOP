@@ -326,6 +326,11 @@ const laboratoryDouble = new Double(laboratory, 50000);
 const creamfallDouble = new Double(creamfall, 250000); 
 const hydroplantDouble = new Double(hydroplant, 1000000);
 
+//  ===============================================================
+//      Quick Time Events
+//  ===============================================================
+
+
 flyingBonus.addEventListener("click", () => {
     earningMultiplier = 2;
     flyingBonus.classList.add("collected");

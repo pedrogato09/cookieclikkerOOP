@@ -9,12 +9,14 @@
 </head>
 
 <body>
-    <h1>Cream Clicker</h1>
-    <button id="flyingBonus" class="flying-bonus" type="button"
-        aria-label="Verdubbel je inkomsten voor 1 minuut"
-        title="Klik voor dubbele inkomsten gedurende 1 minuut">
-        <img src="thecream.png" alt="">
-    </button>
+    <header>
+        <h1>Cream Clicker</h1>
+        <button id="flyingBonus" class="flying-bonus" type="button" aria-label="Verdubbel je inkomsten voor 1 minuut"
+            title="Klik voor dubbele inkomsten gedurende 1 minuut">
+            <img src="thecream.png" alt="">
+        </button>
+    </header>
+
     <main class="game-layout">
         <section class="clicker-panel" aria-label="Cream clicker">
             <div class="cream-stats">
@@ -35,15 +37,16 @@
                         <span class="lines line-3"></span>
                     </label>
 
-                    <a href="#" class="theme-choice red">Rood</a>
-                    <a href="#" class="theme-choice green">Groen</a>
-                    <a href="#" class="theme-choice blue">Blauw</a>
                     <a href="#" class="theme-choice default-theme">Standaard</a>
+                    <a href="#" class="theme-choice red">Rood</a>
+                    <a href="#" class="theme-choice blue">Blauw</a>
+                    <a href="#" class="theme-choice green">Groen</a>
                 </nav>
 
                 <div class="opslaan">
                     <h2>
-                        <button id="saveMenuButton" class="stats-toggle" type="button" aria-expanded="false" aria-controls="saveMenuContent">
+                        <button id="saveMenuButton" class="stats-toggle" type="button" aria-expanded="false"
+                            aria-controls="saveMenuContent">
                             <span class="hamburger" aria-hidden="true">
                                 <span></span>
                                 <span></span>
@@ -81,7 +84,8 @@
             <p id="bonusTimer" role="timer">Bonus: niet actief</p>
             <div class="units">
                 <h2>
-                    <button id="unitsButton" class="stats-toggle" type="button" aria-expanded="true" aria-controls="unitsContent">
+                    <button id="unitsButton" class="stats-toggle" type="button" aria-expanded="true"
+                        aria-controls="unitsContent">
                         <span class="hamburger" aria-hidden="true">
                             <span></span>
                             <span></span>
@@ -105,7 +109,8 @@
         </aside>
         <aside class="store-panel">
             <div class="store-panel-tabs">
-                <button id="storeButton" class="stats-toggle" type="button" aria-expanded="true" aria-controls="storeContent">
+                <button id="storeButton" class="stats-toggle" type="button" aria-expanded="true"
+                    aria-controls="storeContent">
                     <span class="hamburger" aria-hidden="true">
                         <span></span>
                         <span></span>
@@ -114,7 +119,8 @@
                     <span>Winkel</span>
                     <span class="expand-arrow" aria-hidden="true"></span>
                 </button>
-                <button id="upgradesButton" class="stats-toggle" type="button" aria-expanded="false" aria-controls="upgradesContent">
+                <button id="upgradesButton" class="stats-toggle" type="button" aria-expanded="false"
+                    aria-controls="upgradesContent">
                     <span class="hamburger" aria-hidden="true">
                         <span></span>
                         <span></span>
@@ -166,7 +172,7 @@
             </div>
         </aside>
     </main>
-    
+
 </body>
 <script src="script.js"></script>
 
