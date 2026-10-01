@@ -25,6 +25,14 @@ const totalCreams = document.getElementById("totalCreams");
 const totalCreamsSpent = document.getElementById("totalCreamsSpent");
 const statsButton = document.getElementById("statsButton");
 const statsContent = document.getElementById("statsContent");
+const storeButton = document.getElementById("storeButton");
+const storeContent = document.getElementById("storeContent");
+const upgradesButton = document.getElementById("upgradesButton");
+const upgradesContent = document.getElementById("upgradesContent");
+const saveMenuButton = document.getElementById("saveMenuButton");
+const saveMenuContent = document.getElementById("saveMenuContent");
+const unitsButton = document.getElementById("unitsButton");
+const unitsContent = document.getElementById("unitsContent");
 const saveButton = document.getElementById("saveButton");
 
 const stats = {
@@ -133,6 +141,7 @@ class Unit {
  
     update() { 
         this.units.innerText = formatNumber(this.count); 
+        this.units.parentElement.hidden = this.count === 0;
         this.cost.innerText = formatNumber(this.price); 
     } 
  
@@ -397,6 +406,38 @@ if (statsButton && statsContent) {
     statsButton.addEventListener("click", toggleStatsMenu);
 }
 
+function showShopPanel(showUpgrades) {
+    const showStore = !showUpgrades;
+
+    storeContent.classList.toggle("open", showStore);
+    upgradesContent.classList.toggle("open", showUpgrades);
+    storeButton.classList.toggle("open", showStore);
+    upgradesButton.classList.toggle("open", showUpgrades);
+    storeButton.setAttribute("aria-expanded", String(showStore));
+    upgradesButton.setAttribute("aria-expanded", String(showUpgrades));
+}
+
+if (storeButton && storeContent && upgradesButton && upgradesContent) {
+    storeButton.addEventListener("click", () => showShopPanel(false));
+    upgradesButton.addEventListener("click", () => showShopPanel(true));
+}
+
+if (saveMenuButton && saveMenuContent) {
+    saveMenuButton.addEventListener("click", () => {
+        const isOpen = saveMenuContent.classList.toggle("open");
+        saveMenuButton.classList.toggle("open", isOpen);
+        saveMenuButton.setAttribute("aria-expanded", String(isOpen));
+    });
+}
+
+if (unitsButton && unitsContent) {
+    unitsButton.addEventListener("click", () => {
+        const isOpen = unitsContent.classList.toggle("open");
+        unitsButton.classList.toggle("open", isOpen);
+        unitsButton.setAttribute("aria-expanded", String(isOpen));
+    });
+}
+
 if (saveButton) {
     saveButton.addEventListener("click", function() {
         saveGame();
@@ -404,7 +445,7 @@ if (saveButton) {
     });
 }
 
-const themeButtons = document.querySelectorAll(".menu-item.red, .menu-item.green, .menu-item.blue, .menu-item.default-theme");
+const themeButtons = document.querySelectorAll(".theme-choice.red, .theme-choice.green, .theme-choice.blue, .theme-choice.default-theme");
 
 const themeUnlockRequirements = {
     red: { creams: 1_000_000, label: "1 miljoen" },

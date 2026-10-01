@@ -15,126 +15,157 @@
         title="Klik voor dubbele inkomsten gedurende 1 minuut">
         <img src="thecream.png" alt="">
     </button>
-    <p>Cream: <span id="creamCount"></span></p>
-    <p>Per seconde: <span id="creamPerSecond"></span></p>
-    <p id="qteTimer" role="timer">Quick-time-event: actief</p>
-    <p id="bonusTimer" role="timer">Bonus: niet actief</p>
-    <br>
-    <img src="thecream.png" width="400px" id="cream"></img>
-
-
-    <div class="units">
-        <h2>Productie Eenheden</h2>
-        <p>Cursor: <span id="cursorUnits"></span></p>
-        <p>Grandma: <span id="grandmaUnits"></span></p>
-        <p>Farm: <span id="farmUnits"></span></p>
-        <p>Mine: <span id="mineUnits"></span></p>
-        <p>Factory: <span id="factoryUnits"></span></p>
-        <p>Laboratory: <span id="laboratoryUnits"></span></p>
-        <p>Creamfall: <span id="creamfallUnits"></span></p>
-        <p>Hydroplant: <span id="hydroplantUnits"></span></p>
-    </div>
-
-    <div class="theama's">
-        <nav class="menu">
-            <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" />
-            <label class="menu-open-button" for="menu-open">
-                <span class="lines line-1"></span>
-                <span class="lines line-2"></span>
-                <span class="lines line-3"></span>
-            </label>
-
-            <a href="#" class="menu-item red"> <i class="rood"></i> </a>
-            <a href="#" class="menu-item green"> <i class="groen"></i> </a>
-            <a href="#" class="menu-item blue"> <i class="blauw"></i> </a>
-            <a href="#" class="menu-item default-theme"> <i class="standaard"></i> </a>
-
-        </nav>
-
-        <div class="stats-menu">
-            <button id="statsButton" class="stats-toggle" aria-expanded="false" aria-controls="statsContent">
-                <span class="hamburger" aria-hidden="true">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </span>
-                <span>Statistieken</span>
-            </button>
-            <div id="statsContent" class="stats-content">
-                <p>Clicks: <span id="clickCount"></span></p>
-                <p>Aantal creams verdiend: <span id="totalCreams"></span></p>
-                <p>Aantal creams uitgegeven: <span id="totalCreamsSpent"></span></p>
+    <main class="game-layout">
+        <section class="clicker-panel" aria-label="Cream clicker">
+            <div class="cream-stats">
+                <p>Totaal creams: <span id="creamCount"></span></p>
+                <p>Per seconde: <span id="creamPerSecond"></span></p>
             </div>
-        </div>
+            <img src="thecream.png" id="cream" alt="Klik om creams te verdienen">
+        </section>
 
-        <div class="store">
-            <h2>Winkel</h2>
+        <aside class="game-sidebar">
+            <div class="game-controls">
+                <nav class="menu">
+                    <input type="checkbox" href="#" class="menu-open" name="menu-open" id="menu-open" />
+                    <label class="menu-open-button" for="menu-open">
+                        <span class="theme-label">Thema's</span>
+                        <span class="lines line-1"></span>
+                        <span class="lines line-2"></span>
+                        <span class="lines line-3"></span>
+                    </label>
 
-            <button id="cursorStore">Cursor</button>
-            <p>Price: <span id="cursorCost"></span> creams</p>
+                    <a href="#" class="theme-choice red">Rood</a>
+                    <a href="#" class="theme-choice green">Groen</a>
+                    <a href="#" class="theme-choice blue">Blauw</a>
+                    <a href="#" class="theme-choice default-theme">Standaard</a>
+                </nav>
 
-            <button id="grandmaStore">Grandma</button>
-            <p>Price: <span id="grandmaCost"></span> creams</p>
+                <div class="opslaan">
+                    <h2>
+                        <button id="saveMenuButton" class="stats-toggle" type="button" aria-expanded="false" aria-controls="saveMenuContent">
+                            <span class="hamburger" aria-hidden="true">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </span>
+                            <span>Opties</span>
+                            <span class="expand-arrow" aria-hidden="true"></span>
+                        </button>
+                    </h2>
+                    <div id="saveMenuContent" class="save-menu-content">
+                        <button id="saveButton">Save Game</button>
+                        <button id="resetButton">Reset Game</button>
+                    </div>
+                </div>
 
-            <button id="farmStore">Farm</button>
-            <p>Price: <span id="farmCost"></span> creams</p>
+                <div class="stats-menu">
+                    <button id="statsButton" class="stats-toggle" aria-expanded="false" aria-controls="statsContent">
+                        <span class="hamburger" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                        <span>Statistieken</span>
+                        <span class="expand-arrow" aria-hidden="true"></span>
+                    </button>
+                    <div id="statsContent" class="stats-content">
+                        <p>Clicks: <span id="clickCount"></span></p>
+                        <p>Aantal creams verdiend: <span id="totalCreams"></span></p>
+                        <p>Aantal creams uitgegeven: <span id="totalCreamsSpent"></span></p>
+                    </div>
+                </div>
 
-            <button id="mineStore">Mine</button>
-            <p>Price: <span id="mineCost"></span> creams</p>
-
-            <button id="factoryStore">Factory</button>
-            <p>Price: <span id="factoryCost"></span> creams</p>
-
-            <button id="laboratoryStore">Laboratory</button>
-            <p>Price: <span id="laboratoryCost"></span> creams</p>
-
-            <button id="creamfallStore">Creamfall</button>
-            <p>Price: <span id="creamfallCost"></span> creams</p>
-
-            <button id="hydroplantStore">Hydroplant</button>
-            <p>Price: <span id="hydroplantCost"></span> creams</p>
-        </div>
-
-        <div class="upgrades">
-            <h2>Upgrades</h2>
-
-            <button id="cursorUpgrade">Cursor Upgrade</button>
-            <p>Price: <span id="cursorUpgradeCost"></span> creams</p>
-
-            <button id="grandmaUpgrade">Grandma Upgrade</button>
-            <p>Price: <span id="grandmaUpgradeCost"></span> creams</p>
-
-            <button id="mineUpgrade">Mine Upgrade</button>
-            <p>Price: <span id="mineUpgradeCost"></span> creams</p>
-
-            <button id="factoryUpgrade">Factory Upgrade</button>
-            <p>Price: <span id="factoryUpgradeCost"></span> creams</p>
-
-            <button id="laboratoryUpgrade">Laboratory Upgrade</button>
-            <p>Price: <span id="laboratoryUpgradeCost"></span> creams</p>
-
-            <button id="creamfallUpgrade">Creamfall Upgrade</button>
-            <p>Price: <span id="creamfallUpgradeCost"></span> creams</p>
-
-            <button id="hydroplantUpgrade">Hydroplant Upgrade</button>
-            <p>Price: <span id="hydroplantUpgradeCost"></span> creams</p>
-
-            <button id="cursorBonusUpgrade">Cursor Bonus</button>
-            <p>Price: <span id="cursorBonusUpgradeCost"></span> creams</p>
-
-            <button id="prodBonusUpgrade">Production Bonus</button>
-            <p>Price: <span id="prodBonusUpgradeCost"></span> creams</p>
-            
-            <button id="totalClickUpgrade">Click Bonus</button>
-            <p>Price: <span id="totalClickUpgradeCost"></span> creams</p>
-        </div>
-
-        <div class="opslaan">
-            <h2>Opslaan</h2>
-            <button id="saveButton">Save Game</button>
-            <button id="resetButton">Reset Game</button>
-        </div>
-    </div>
+            </div>
+            <p id="qteTimer" role="timer">Quick-time-event: actief</p>
+            <p id="bonusTimer" role="timer">Bonus: niet actief</p>
+            <div class="units">
+                <h2>
+                    <button id="unitsButton" class="stats-toggle" type="button" aria-expanded="true" aria-controls="unitsContent">
+                        <span class="hamburger" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                        <span>Productie Eenheden</span>
+                        <span class="expand-arrow" aria-hidden="true"></span>
+                    </button>
+                </h2>
+                <div id="unitsContent" class="units-content open">
+                    <p hidden>Cursor: <span id="cursorUnits"></span></p>
+                    <p hidden>Grandma: <span id="grandmaUnits"></span></p>
+                    <p hidden>Farm: <span id="farmUnits"></span></p>
+                    <p hidden>Mine: <span id="mineUnits"></span></p>
+                    <p hidden>Factory: <span id="factoryUnits"></span></p>
+                    <p hidden>Laboratory: <span id="laboratoryUnits"></span></p>
+                    <p hidden>Creamfall: <span id="creamfallUnits"></span></p>
+                    <p hidden>Hydroplant: <span id="hydroplantUnits"></span></p>
+                </div>
+            </div>
+        </aside>
+        <aside class="store-panel">
+            <div class="store-panel-tabs">
+                <button id="storeButton" class="stats-toggle" type="button" aria-expanded="true" aria-controls="storeContent">
+                    <span class="hamburger" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    <span>Winkel</span>
+                    <span class="expand-arrow" aria-hidden="true"></span>
+                </button>
+                <button id="upgradesButton" class="stats-toggle" type="button" aria-expanded="false" aria-controls="upgradesContent">
+                    <span class="hamburger" aria-hidden="true">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                    <span>Upgrades</span>
+                    <span class="expand-arrow" aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="storeContent" class="store-content open">
+                <button id="cursorStore">Cursor</button>
+                <p>Price: <span id="cursorCost"></span> creams</p>
+                <button id="grandmaStore">Grandma</button>
+                <p>Price: <span id="grandmaCost"></span> creams</p>
+                <button id="farmStore">Farm</button>
+                <p>Price: <span id="farmCost"></span> creams</p>
+                <button id="mineStore">Mine</button>
+                <p>Price: <span id="mineCost"></span> creams</p>
+                <button id="factoryStore">Factory</button>
+                <p>Price: <span id="factoryCost"></span> creams</p>
+                <button id="laboratoryStore">Laboratory</button>
+                <p>Price: <span id="laboratoryCost"></span> creams</p>
+                <button id="creamfallStore">Creamfall</button>
+                <p>Price: <span id="creamfallCost"></span> creams</p>
+                <button id="hydroplantStore">Hydroplant</button>
+                <p>Price: <span id="hydroplantCost"></span> creams</p>
+            </div>
+            <div id="upgradesContent" class="upgrades-content">
+                <button id="cursorUpgrade">Cursor Upgrade</button>
+                <p>Price: <span id="cursorUpgradeCost"></span> creams</p>
+                <button id="grandmaUpgrade">Grandma Upgrade</button>
+                <p>Price: <span id="grandmaUpgradeCost"></span> creams</p>
+                <button id="mineUpgrade">Mine Upgrade</button>
+                <p>Price: <span id="mineUpgradeCost"></span> creams</p>
+                <button id="factoryUpgrade">Factory Upgrade</button>
+                <p>Price: <span id="factoryUpgradeCost"></span> creams</p>
+                <button id="laboratoryUpgrade">Laboratory Upgrade</button>
+                <p>Price: <span id="laboratoryUpgradeCost"></span> creams</p>
+                <button id="creamfallUpgrade">Creamfall Upgrade</button>
+                <p>Price: <span id="creamfallUpgradeCost"></span> creams</p>
+                <button id="hydroplantUpgrade">Hydroplant Upgrade</button>
+                <p>Price: <span id="hydroplantUpgradeCost"></span> creams</p>
+                <button id="cursorBonusUpgrade">Cursor Bonus</button>
+                <p>Price: <span id="cursorBonusUpgradeCost"></span> creams</p>
+                <button id="prodBonusUpgrade">Production Bonus</button>
+                <p>Price: <span id="prodBonusUpgradeCost"></span> creams</p>
+                <button id="totalClickUpgrade">Click Bonus</button>
+                <p>Price: <span id="totalClickUpgradeCost"></span> creams</p>
+            </div>
+        </aside>
+    </main>
     
 </body>
 <script src="script.js"></script>
