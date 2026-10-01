@@ -321,18 +321,19 @@ class TotalClick extends ProductionBonus {
 
 const totalClick = new TotalClick("totalClick", 600000000, 0.00001)
 
-const prodBonus = new ProductionBonus("prodBonus", 8000000, 0.1);
+const prodBonus = new ProductionBonus("prodBonus", 20000000, 0.1);
  
-const cursorBonus = new ClickBonus(cursor, 500000); 
+const cursorBonus = new ClickBonus(cursor, 5000000); 
  
-const cursorDouble = new DoubleClick(cursor, 100); 
+const cursorDouble = new DoubleClick(cursor, 3000); 
  
-const grandmaDouble = new Double(grandma, 500); 
-const mineDouble = new Double(mine, 2000); 
-const factoryDouble = new Double(factory, 10000); 
-const laboratoryDouble = new Double(laboratory, 50000); 
-const creamfallDouble = new Double(creamfall, 250000); 
-const hydroplantDouble = new Double(hydroplant, 1000000);
+const grandmaDouble = new Double(grandma, 20000); 
+const farmDouble = new Double(farm, 160000);
+const mineDouble = new Double(mine, 1280000); 
+const factoryDouble = new Double(factory, 10200000); 
+const laboratoryDouble = new Double(laboratory, 81600000); 
+const creamfallDouble = new Double(creamfall, 660000000); 
+const hydroplantDouble = new Double(hydroplant, 5480000000);
 
 //  ===============================================================
 //      Quick Time Events
