@@ -132,6 +132,7 @@ class Unit {
         this.units = document.getElementById(this.name + "Units"); 
         this.store = document.getElementById(this.name + "Store"); 
         this.cost = document.getElementById(this.name + "Cost"); 
+        this.amount = document.getElementById(this.name + "Amount");
  
         this.store.addEventListener("click", () => { 
             this.buy(); 
@@ -143,6 +144,7 @@ class Unit {
         this.units.innerText = formatNumber(this.count); 
         this.units.parentElement.hidden = this.count === 0;
         this.cost.innerText = formatNumber(this.price); 
+        this.amount.innerText = formatNumber(this.count);
     } 
  
     buy() { 
@@ -198,6 +200,7 @@ class Double {
  
         this.upgrade = document.getElementById(this.name + "Upgrade"); 
         this.cost = document.getElementById(this.name + "UpgradeCost"); 
+        this.amount = document.getElementById(this.name + "UpgradeAmount");
  
         this.upgrade.addEventListener("click", () => { 
             this.buy(); 
@@ -207,6 +210,7 @@ class Double {
  
     update() { 
         this.cost.innerText = formatNumber(this.price); 
+        this.amount.innerText = formatNumber(this.count);
     } 
  
     buy() { 
@@ -244,6 +248,7 @@ class ClickBonus {
  
         this.upgrade = document.getElementById(this.name + "Upgrade"); 
         this.cost = document.getElementById(this.name + "UpgradeCost"); 
+        this.amount = document.getElementById(this.name + "UpgradeAmount");
  
         this.upgrade.addEventListener("click", () => { 
             this.buy() 
@@ -253,6 +258,7 @@ class ClickBonus {
  
     update() { 
         this.cost.innerText = formatNumber(this.price); 
+        this.amount.innerText = formatNumber(this.count);
     } 
  
     buy() { 
@@ -277,6 +283,7 @@ class ProductionBonus {
 
         this.upgrade = document.getElementById(this.name + "Upgrade"); 
         this.cost = document.getElementById(this.name + "UpgradeCost"); 
+        this.amount = document.getElementById(this.name + "UpgradeAmount");
         this.upgrade.addEventListener("click", () => { 
             this.buy() 
         }); 
@@ -285,6 +292,7 @@ class ProductionBonus {
  
     update() { 
         this.cost.innerText = formatNumber(this.price);
+        this.amount.innerText = formatNumber(this.count);
     }
 
     buy() { 
