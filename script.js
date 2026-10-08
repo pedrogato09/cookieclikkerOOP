@@ -8,16 +8,10 @@ let mouseClick = 1;
 let production = 0;
 let earningMultiplier = 1;
 let bonusCountdownInterval;
-const QTE_CYCLE_DURATION = 15 * 60 * 1000;
-const QTE_VISIBLE_DURATION = QTE_CYCLE_DURATION * 0.009;
-let qteCycleStartedAt = Date.now();
-let qteCollected = false;
-let qteCountdownInterval;
 
 const click = document.getElementById("cream");
 const flyingBonus = document.getElementById("flyingBonus");
 const bonusTimer = document.getElementById("bonusTimer");
-const qteTimer = document.getElementById("qteTimer");
 const count = document.getElementById("creamCount");
 const creamPerSecond = document.getElementById("creamPerSecond");
 const clickCount = document.getElementById("clickCount");
@@ -343,8 +337,6 @@ const hydroplantDouble = new Double(hydroplant, 5480000000);
 flyingBonus.addEventListener("click", () => {
     earningMultiplier = 2;
     flyingBonus.classList.add("collected");
-    qteCollected = true;
-    updateQteTimer();
 
     clearInterval(bonusCountdownInterval);
     const expiresAt = Date.now() + 60_000;
@@ -370,26 +362,7 @@ flyingBonus.addEventListener("click", () => {
 
 flyingBonus.addEventListener("animationiteration", () => {
     flyingBonus.classList.remove("collected");
-    qteCollected = false;
-    updateQteTimer();
 });
-
-function updateQteTimer() {
-    const elapsed = (Date.now() - qteCycleStartedAt) % QTE_CYCLE_DURATION;
-
-    if (!qteCollected && elapsed < QTE_VISIBLE_DURATION) {
-        qteTimer.innerText = "Quick-time-event: actief";
-        return;
-    }
-
-    const remainingSeconds = Math.ceil((QTE_CYCLE_DURATION - elapsed) / 1000);
-    const minutes = Math.floor(remainingSeconds / 60);
-    const seconds = String(remainingSeconds % 60).padStart(2, "0");
-    qteTimer.innerText = `Volgend quick-time-event: ${minutes}:${seconds}`;
-}
-
-updateQteTimer();
-qteCountdownInterval = setInterval(updateQteTimer, 1000);
 
 
 //  ===============================================================
@@ -454,8 +427,9 @@ if (unitsButton && unitsContent) {
 
 if (saveButton) {
     saveButton.addEventListener("click", function() {
-        saveGame();
-        alert("Game opgeslagen!");
+        if (saveGame()) {
+            alert("Game opgeslagen!");
+        }
     });
 }
 
@@ -515,41 +489,65 @@ themeButtons.forEach((button) => {
 
 const SAVE_KEY = "creamClickerSave";
 
+const gameUnits = {
+    cursor,
+    grandma,
+    farm,
+    mine,
+    factory,
+    laboratory,
+    creamfall,
+    hydroplant
+};
+
+const gameUpgrades = {
+    cursor: cursorDouble,
+    grandma: grandmaDouble,
+    farm: farmDouble,
+    mine: mineDouble,
+    factory: factoryDouble,
+    laboratory: laboratoryDouble,
+    creamfall: creamfallDouble,
+    hydroplant: hydroplantDouble,
+    cursorBonus,
+    prodBonus,
+    totalClick
+};
+
 function saveGame() {
     const saveData = {
         cream,
-        stats,
-        units: {
-            cursor: { count: cursor.count, price: cursor.price, rate: cursor.rate },
-            grandma: { count: grandma.count, price: grandma.price, rate: grandma.rate },
-            farm: { count: farm.count, price: farm.price, rate: farm.rate },
-            mine: { count: mine.count, price: mine.price, rate: mine.rate },
-            factory: { count: factory.count, price: factory.price, rate: factory.rate },
-            laboratory: { count: laboratory.count, price: laboratory.price, rate: laboratory.rate },
-            creamfall: { count: creamfall.count, price: creamfall.price, rate: creamfall.rate },
-            hydroplant: { count: hydroplant.count, price: hydroplant.price, rate: hydroplant.rate }
-        },
-        upgrades: {
-            cursor: { price: cursorUpgrade.price, rate: cursorUpgrade.rate },
-            grandma: { price: grandmaUpgrade.price, rate: grandmaUpgrade.rate },
-            mine: { price: mineUpgrade.price, rate: mineUpgrade.rate },
-            factory: { price: factoryUpgrade.price, rate: factoryUpgrade.rate },
-            laboratory: { price: laboratoryUpgrade.price, rate: laboratoryUpgrade.rate },
-            creamfall: { price: creamfallUpgrade.price, rate: creamfallUpgrade.rate },
-            hydroplant: { price: hydroplantUpgrade.price, rate: hydroplantUpgrade.rate }
-        }
+        stats: { ...stats },
+        units: Object.fromEntries(
+            Object.entries(gameUnits).map(([name, unit]) => [
+                name,
+                { count: unit.count, price: unit.price, rate: unit.rate }
+            ])
+        ),
+        upgrades: Object.fromEntries(
+            Object.entries(gameUpgrades).map(([name, upgrade]) => [
+                name,
+                { count: upgrade.count, price: upgrade.price }
+            ])
+        )
     };
 
-    localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+    try {
+        localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
+        return true;
+    } catch (error) {
+        console.error("Game could not be saved:", error);
+        alert("Opslaan is mislukt. Controleer of browseropslag beschikbaar is.");
+        return false;
+    }
 }
 
 function loadGame() {
-    const savedGame = localStorage.getItem(SAVE_KEY);
-    if (!savedGame) return;
-
     try {
-        const data = JSON.parse(savedGame);
+        const savedGame = localStorage.getItem(SAVE_KEY);
+        if (!savedGame) return;
 
+        const data = JSON.parse(savedGame);
         if (!data) return;
 
         cream = Number(data.cream) || 0;
@@ -557,56 +555,45 @@ function loadGame() {
         stats.earned = Number(data.stats?.earned) || 0;
         stats.spent = Number(data.stats?.spent) || 0;
 
-        const units = data.units || {};
-        const unitMap = {
-            cursor,
-            grandma,
-            farm,
-            mine,
-            factory,
-            laboratory,
-            creamfall,
-            hydroplant
-        };
+        Object.entries(gameUnits).forEach(([name, unit]) => {
+            const savedUnit = data.units?.[name];
+            if (!savedUnit) return;
 
-        Object.keys(unitMap).forEach((name) => {
-            if (!units[name]) return;
-            unitMap[name].count = Number(units[name].count) || 0;
-            unitMap[name].price = Number(units[name].price) || unitMap[name].basePrice;
-            unitMap[name].rate = Number(units[name].rate) || unitMap[name].rate;
-            unitMap[name].unitUpdate();
+            unit.count = Number(savedUnit.count) || 0;
+            unit.price = Number(savedUnit.price) || unit.basePrice;
+            unit.rate = Number(savedUnit.rate) || unit.rate;
+            unit.update();
+        });
+        Unit.total = Object.values(gameUnits).reduce((total, unit) => total + unit.count, 0);
+
+        Object.entries(gameUpgrades).forEach(([name, upgrade]) => {
+            const savedUpgrade = data.upgrades?.[name];
+            if (!savedUpgrade) return;
+
+            upgrade.count = Number(savedUpgrade.count) || 0;
+            upgrade.price = Number(savedUpgrade.price) || upgrade.price;
+            upgrade.update();
         });
 
-        const upgrades = data.upgrades || {};
-        const upgradeMap = {
-            cursor: cursorUpgrade,
-            grandma: grandmaUpgrade,
-            mine: mineUpgrade,
-            factory: factoryUpgrade,
-            laboratory: laboratoryUpgrade,
-            creamfall: creamfallUpgrade,
-            hydroplant: hydroplantUpgrade
-        };
-
-        Object.keys(upgradeMap).forEach((name) => {
-            if (!upgrades[name]) return;
-            upgradeMap[name].price = Number(upgrades[name].price) || upgradeMap[name].price;
-            upgradeMap[name].rate = Number(upgrades[name].rate) || upgradeMap[name].rate;
-            upgradeMap[name].upgradeUpdate();
-        });
-
+        DoubleClick.clicks = cursorDouble.rate ** cursorDouble.count;
+        cursorBonus.update();
+        prodBonus.bonus = prodBonus.count * prodBonus.factor + 1;
+        totalClick.bonus = totalClick.count * totalClick.factor * stats.clicks + 1;
         statsUpdate();
     } catch (error) {
-        console.error("Save file is invalid:", error);
+        console.error("Game save could not be loaded:", error);
     }
 }
 
-document.getElementById("resetButton").addEventListener("click", () => {
-    if (!confirm("Weet je zeker dat je opnieuw wilt beginnen?")) return;
+const resetButton = document.getElementById("resetButton");
+if (resetButton) {
+    resetButton.addEventListener("click", () => {
+        if (!confirm("Weet je zeker dat je opnieuw wilt beginnen?")) return;
 
-    localStorage.removeItem(SAVE_KEY);
-    location.reload();
-});
+        localStorage.removeItem(SAVE_KEY);
+        location.reload();
+    });
+}
 
 //  ===============================================================
 //      Call Functions

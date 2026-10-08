@@ -71,14 +71,23 @@ body.theme-blue {
    margin-bottom: 68px;
 }
 
-.game-controls .menu {
+.game-controls .theme-controls {
    grid-area: themes;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end;
+   align-self: start;
+   gap: 8px;
+   justify-self: end;
+   width: 90px;
+}
+
+.game-controls .menu {
    display: flex;
    flex-direction: column;
    align-items: stretch;
    gap: 4px;
    position: relative;
-   justify-self: end;
    width: 90px;
    height: 28px;
 }
@@ -211,6 +220,7 @@ body.theme-blue {
       column-gap: 12px;
    }
 
+   .game-controls .theme-controls,
    .game-controls .menu,
    .game-controls .menu-open-button {
       width: 70px;
